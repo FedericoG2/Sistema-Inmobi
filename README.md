@@ -83,4 +83,26 @@ Se abrirá la URL que indique la terminal (por lo general `http://localhost:5173
 └── eslint.config.js     # Reglas de ESLint
 ```
 
+---
+
+## Publicar en GitHub
+
+El proyecto ya tiene **Git inicializado** y un **commit inicial** en la rama `main`. Falta crear el repositorio vacío en GitHub y subir el código (GitHub no permite crear el remoto sin iniciar sesión en tu cuenta).
+
+1. Entrá a [github.com](https://github.com), iniciá sesión y pulsá **New repository** (o **+** → **New repository**).
+2. Elegí un nombre (por ejemplo `sistema-gestion-inmobiliaria`), dejalo **público** o **privado** según prefieras.
+3. **No** marques “Add a README”, “Add .gitignore” ni “Choose a license” (el proyecto local ya tiene archivos; evitás conflictos al hacer push).
+4. Creá el repositorio. GitHub mostrará la URL; copiá la que termina en `.git` (HTTPS o SSH).
+
+En la carpeta del proyecto (PowerShell o terminal):
+
+```bash
+cd "ruta\a\Sistema de Gestión Inmobiliaria"
+git remote add origin https://github.com/TU_USUARIO/TU_REPO.git
+git push -u origin main
+```
+
+Si GitHub te pide autenticación, usá un **Personal Access Token** como contraseña (HTTPS) o configurá **SSH**. Si el remoto ya existía mal configurado: `git remote remove origin` y volvé a agregarlo.
+
+---
 
