@@ -1,8 +1,9 @@
-# 🏠 Zitelli & Asociados - Sistema de Gestión Inmobiliaria
+# 🏠 Inmobi Sistema de Gestión Inmobiliaria
 
-## Descripción
+## Descripción del Proyecto
 
-Sistema de Gestión Inmobiliaria.
+Sistema Web de Gestión Inmobiliaria que permitirá centralizar la gestión e información de propiedades e inquilinos; automatizar procesos críticos, como el cálculo masivo de aumentos de alquileres, además de optimizar la atención al cliente mediante el seguimiento de reclamos junto al acceso centralizado a la documentación.
+
 
 ---
 
