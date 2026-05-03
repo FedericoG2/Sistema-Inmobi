@@ -1,45 +1,57 @@
-import { Home } from 'lucide-react'
+import { Building2, FileText, LayoutGrid, User, Users, Wallet, Wrench } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
 const adminLinks = [
-  { to: '/admin/dashboard', label: 'Dashboard' },
-  { to: '/admin/propiedades', label: 'Propiedades' },
-  { to: '/admin/inquilinos', label: 'Inquilinos' },
-  { to: '/admin/contabilidad', label: 'Contabilidad' },
-  { to: '/admin/reclamos', label: 'Reclamos' },
-  { to: '/admin/documentacion', label: 'Documentación' },
+  { to: '/admin/dashboard', label: 'Dashboard', Icon: LayoutGrid },
+  { to: '/admin/propiedades', label: 'Propiedades', Icon: Building2 },
+  { to: '/admin/inquilinos', label: 'Inquilinos', Icon: Users },
+  { to: '/admin/contabilidad', label: 'Contabilidad', Icon: Wallet },
+  { to: '/admin/reclamos', label: 'Reclamos', Icon: Wrench },
+  { to: '/admin/documentacion', label: 'Documentación', Icon: FileText },
 ]
 
 const userLinks = [
-  { to: '/usuario/mi-contrato', label: 'Mi contrato' },
-  { to: '/usuario/perfil', label: 'Perfil' },
+  { to: '/usuario/mi-contrato', label: 'Mi contrato', Icon: FileText },
+  { to: '/usuario/perfil', label: 'Perfil', Icon: User },
 ]
 
 export function Sidebar({ variant }) {
-  const links = variant === 'user' ? userLinks : adminLinks
-  const heading = variant === 'user' ? 'Área inquilino' : 'Administración'
+  const isUser = variant === 'user'
+  const links = isUser ? userLinks : adminLinks
+  const subtitle = isUser ? 'ÁREA INQUILINO' : 'ASSET MANAGEMENT'
 
   return (
-    <aside className="bg-dark text-white d-flex flex-column" style={{ width: 260, minHeight: '100vh' }}>
-      <div className="p-4 border-bottom border-secondary">
-        <div className="d-flex align-items-center gap-2 fw-semibold">
-          <Home className="text-white flex-shrink-0" size={20} strokeWidth={2} aria-hidden />
-          <span>{heading}</span>
+    <aside className="inmobi-sidebar">
+      <div className="inmobi-sidebar-brand">
+        <div className="d-flex align-items-center gap-3">
+          <div className="inmobi-sidebar-logo-mark" aria-hidden>
+            <Building2 size={22} strokeWidth={2} aria-hidden />
+          </div>
+          <div className="d-flex flex-column">
+            <span className="inmobi-sidebar-brand-title">Inmobi</span>
+            <span className="inmobi-sidebar-brand-sub">{subtitle}</span>
+          </div>
         </div>
-        <div className="small text-white-50 mt-1">Gestión inmobiliaria</div>
       </div>
-      <nav className="nav flex-column p-3 gap-1">
-        {links.map(({ to, label }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) =>
-              `nav-link rounded px-3 py-2 ${isActive ? 'bg-primary text-white' : 'text-white-50'}`
-            }
-          >
-            {label}
-          </NavLink>
-        ))}
+      <nav className="inmobi-sidebar-nav">
+        {links.map((item) => {
+          const IconComponent = item.Icon
+          return (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) => `inmobi-sidebar-link ${isActive ? 'active' : ''}`}
+            >
+              <IconComponent
+                size={18}
+                strokeWidth={2}
+                className="inmobi-sidebar-link-icon flex-shrink-0"
+                aria-hidden
+              />
+              <span>{item.label}</span>
+            </NavLink>
+          )
+        })}
       </nav>
     </aside>
   )

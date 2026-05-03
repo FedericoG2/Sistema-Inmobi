@@ -7,7 +7,7 @@ export function AdminLayout() {
     <div className="d-flex min-vh-100">
       <Sidebar variant="admin" />
       <div className="flex-grow-1 d-flex flex-column bg-light">
-        <Navbar title="Panel de administración" />
+        <Navbar userName="Admin Inmobi" userRole="ADMINISTRADOR SENIOR" />
         <main className="flex-grow-1 p-4">
           <Outlet />
         </main>

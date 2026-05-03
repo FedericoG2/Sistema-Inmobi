@@ -7,7 +7,7 @@ export function UserLayout() {
     <div className="d-flex min-vh-100">
       <Sidebar variant="user" />
       <div className="flex-grow-1 d-flex flex-column bg-light">
-        <Navbar title="Mi cuenta" />
+        <Navbar userName="Inquilino" userRole="ÁREA INQUILINO" />
         <main className="flex-grow-1 p-4">
           <Outlet />
         </main>
