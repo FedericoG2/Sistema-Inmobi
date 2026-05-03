@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { AdminLayout } from '../components/layout/AdminLayout.jsx'
 import { UserLayout } from '../components/layout/UserLayout.jsx'
 import { Contabilidad } from '../views/admin/Contabilidad.jsx'
+import { Contratos } from '../views/admin/Contratos.jsx'
 import { Dashboard } from '../views/admin/Dashboard.jsx'
 import { Documentacion } from '../views/admin/Documentacion.jsx'
 import { Inquilinos } from '../views/admin/Inquilinos.jsx'
@@ -21,6 +22,7 @@ export function AppRoutes() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="propiedades" element={<Propiedades />} />
         <Route path="inquilinos" element={<Inquilinos />} />
+        <Route path="contratos" element={<Contratos />} />
         <Route path="contabilidad" element={<Contabilidad />} />
         <Route path="reclamos" element={<Reclamos />} />
         <Route path="documentacion" element={<Documentacion />} />

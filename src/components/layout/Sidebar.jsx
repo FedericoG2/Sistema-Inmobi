@@ -1,10 +1,11 @@
-import { Building2, FileText, LayoutGrid, User, Users, Wallet, Wrench } from 'lucide-react'
+import { Building2, FileSignature, FileText, LayoutGrid, User, Users, Wallet, Wrench } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
 const adminLinks = [
   { to: '/admin/dashboard', label: 'Dashboard', Icon: LayoutGrid },
   { to: '/admin/propiedades', label: 'Propiedades', Icon: Building2 },
   { to: '/admin/inquilinos', label: 'Inquilinos', Icon: Users },
+  { to: '/admin/contratos', label: 'Contratos', Icon: FileSignature },
   { to: '/admin/contabilidad', label: 'Contabilidad', Icon: Wallet },
   { to: '/admin/reclamos', label: 'Reclamos', Icon: Wrench },
   { to: '/admin/documentacion', label: 'Documentación', Icon: FileText },
