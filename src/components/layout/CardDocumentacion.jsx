@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 export function CardDocumentacion() {
   return (
     <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
+      <Card.Img variant="top" src="https://placehold.co/600x400?text=Imagen+de+Prueba" />
      
       <Card.Body>
         <Card.Title>NOMBRE INQUILINO</Card.Title>

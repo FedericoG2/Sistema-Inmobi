@@ -1,6 +1,7 @@
 import { DocumentosAlerta } from "../../components/layout/DocumentosAlert"
 import { CardDocumentacion } from "../../components/layout/CardDocumentacion"
-import { ListadoReclamos } from "../../components/layout/ListadoReclamos"
+import { Documentos } from "../../components/layout/Documentos"
+import '../../components/layout/DocumentosStyle.css';
 
 
 export function Documentacion() {
@@ -9,10 +10,11 @@ export function Documentacion() {
       <h1 className="h3 mb-3">Documentación</h1>
       <p className="text-muted">Contratos, anexos y archivos legales.</p>
       <DocumentosAlerta/>
-      <hr />
-      <CardDocumentacion  />
-      <hr />
-      <ListadoReclamos/>
+      <div className="documentos-cards">
+      <CardDocumentacion/>
+      <Documentos/>
+      </div>
+      
     </>
   )
 }
