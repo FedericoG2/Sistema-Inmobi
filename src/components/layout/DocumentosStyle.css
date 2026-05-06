@@ -1,0 +1,14 @@
+.documentos-cards {
+    display: grid;
+    /* Definimos dos columnas: una de 300px y la otra que ocupa el resto (1fr) */
+    grid-template-columns: 300px 1fr; 
+    gap: 20px;
+    align-items: start;
+  }
+  
+  /* Para que sea responsivo: si la pantalla es chica, pasa a una sola columna */
+  @media (max-width: 992px) {
+    .documentos-cards {
+      grid-template-columns: 1fr;
+    }
+  }
