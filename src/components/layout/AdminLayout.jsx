@@ -4,11 +4,11 @@ import { Sidebar } from './Sidebar.jsx'
 
 export function AdminLayout() {
   return (
-    <div className="d-flex min-vh-100">
+    <div className="d-flex min-vh-100 min-w-0">
       <Sidebar variant="admin" />
-      <div className="flex-grow-1 d-flex flex-column bg-light">
-        <Navbar userName="Admin Inmobi" userRole="ADMINISTRADOR SENIOR" />
-        <main className="flex-grow-1 p-4">
+      <div className="flex-grow-1 d-flex flex-column bg-light min-w-0">
+        <Navbar userName="Administrador" />
+        <main className="flex-grow-1 p-4 min-w-0">
           <Outlet />
         </main>
       </div>
