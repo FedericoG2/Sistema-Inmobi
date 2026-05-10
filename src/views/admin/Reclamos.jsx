@@ -16,7 +16,7 @@ export function Reclamos() {
 
   return (
     <>
-      <h1 className="h4 fw-bold mb-1" style={{ color: 'var(--inmobi-navy)' }}>
+      <h1 className="h3 fw-bold mb-1" style={{ color: 'var(--inmobi-navy)' }}>
         Reclamos
       </h1>
       <p className="text-secondary small mb-2 mb-md-3">
@@ -24,21 +24,24 @@ export function Reclamos() {
       </p>
 
       <AdminFilterCard
+        compact
         showViewToggle={false}
         prepend={
           <AdminSearchBar
+            compact
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar reclamos..."
             ariaLabel="Buscar reclamos"
-            wrapperStyle={{ minWidth: 200, maxWidth: 360, flex: '1 1 220px' }}
+            wrapperStyle={{ minWidth: 160, maxWidth: 320, flex: '1 1 200px' }}
           />
         }
         trailing={
           <Button
             type="button"
             variant="success"
-            className="fw-semibold rounded-3 px-4 py-2 shadow-sm"
+            size="sm"
+            className="fw-semibold rounded-3 px-3 shadow-sm"
             onClick={handleShow}
           >
             Nuevo Reclamo
@@ -51,7 +54,7 @@ export function Reclamos() {
               label="Estado del reclamo"
               value={estado}
               onChange={(e) => setEstado(e.target.value)}
-              minWidth={180}
+              minWidth={136}
             >
               <option value="todos">Estado: Todos</option>
               <option value="pendiente">Pendiente</option>
@@ -64,7 +67,7 @@ export function Reclamos() {
               label="Área de reclamo"
               value={area}
               onChange={(e) => setArea(e.target.value)}
-              minWidth={200}
+              minWidth={136}
             >
               <option value="todos">Área: Todas</option>
               <option value="administracion">Administración</option>

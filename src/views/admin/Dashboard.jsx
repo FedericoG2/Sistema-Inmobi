@@ -6,6 +6,7 @@ import {
   Users,
   Wrench,
 } from 'lucide-react'
+import Badge from 'react-bootstrap/Badge'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
@@ -14,6 +15,49 @@ import Table from 'react-bootstrap/Table'
 import { DashboardStatCard } from '../../components/admin/DashboardStatCard'
 
 const iconSize = 18
+
+/** Datos de ejemplo para maquetación; sustituir por respuesta del API. */
+const actividadRecienteEstatica = [
+  {
+    id: '1',
+    tituloPrincipal: 'Local comercial San Martín',
+    subtitulo: 'San Martín 1450, CABA · PB frente',
+    accion: 'Nueva propiedad cargada',
+    fecha: '10/05/2026 · 14:20',
+    monto: 'REF-PR-1844',
+    estadoLabel: 'Disponible',
+    estadoBadgeProps: {
+      pill: true,
+      className: 'text-bg-primary text-uppercase small',
+    },
+  },
+  {
+    id: '2',
+    tituloPrincipal: 'María González',
+    subtitulo: 'Depto 4º A · Av. Corrientes 1842, CABA',
+    accion: 'Nuevo contrato generado',
+    fecha: '10/05/2026 · 10:05',
+    monto: 'CT‑2026‑0910',
+    estadoLabel: 'Vigente',
+    estadoBadgeProps: {
+      pill: true,
+      className: 'text-bg-success text-uppercase small',
+    },
+  },
+  {
+    id: '3',
+    tituloPrincipal: 'Luciano Fernández',
+    subtitulo: 'Duplex · B° Nueva Córdoba',
+    accion: 'Nuevo reclamo abierto',
+    fecha: '09/05/2026 · 11:40',
+    monto: '#REC‑0918',
+    estadoLabel: 'Abierto',
+    estadoBadgeProps: {
+      pill: true,
+      className: 'text-bg-danger text-uppercase small',
+    },
+  },
+]
 
 export function Dashboard() {
   return (
@@ -91,10 +135,10 @@ export function Dashboard() {
           </Stack>
 
           <div className="table-responsive">
-            <Table hover className="align-middle mb-0 small">
+            <Table hover size="sm" className="align-middle mb-0 small">
               <thead>
                 <tr className="border-bottom">
-                  <th className="text-uppercase text-secondary fw-semibold border-0 py-2" style={{ fontSize: '0.65rem' }}>
+                  <th className="text-uppercase text-secondary fw-semibold border-0 py-2 ps-2" style={{ fontSize: '0.65rem' }}>
                     Inquilino / Propiedad
                   </th>
                   <th className="text-uppercase text-secondary fw-semibold border-0 py-2" style={{ fontSize: '0.65rem' }}>
@@ -106,17 +150,26 @@ export function Dashboard() {
                   <th className="text-uppercase text-secondary fw-semibold border-0 py-2" style={{ fontSize: '0.65rem' }}>
                     Monto / Ref.
                   </th>
-                  <th className="text-uppercase text-secondary fw-semibold border-0 py-2" style={{ fontSize: '0.65rem' }}>
+                  <th className="text-uppercase text-secondary fw-semibold border-0 py-2 pe-2" style={{ fontSize: '0.65rem' }}>
                     Estado
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td colSpan={5} className="text-center text-secondary py-3 border-0">
-                    Sin datos
-                  </td>
-                </tr>
+                {actividadRecienteEstatica.map((row) => (
+                  <tr key={row.id}>
+                    <td className="border-0 py-2 ps-2">
+                      <div className="fw-semibold">{row.tituloPrincipal}</div>
+                      <div className="text-secondary">{row.subtitulo}</div>
+                    </td>
+                    <td className="border-0 py-2">{row.accion}</td>
+                    <td className="border-0 py-2 text-secondary">{row.fecha}</td>
+                    <td className="border-0 py-2 fw-medium">{row.monto}</td>
+                    <td className="border-0 py-2 pe-2">
+                      <Badge {...row.estadoBadgeProps}>{row.estadoLabel}</Badge>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </Table>
           </div>
