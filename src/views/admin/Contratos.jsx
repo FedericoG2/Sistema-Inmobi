@@ -1,8 +1,6 @@
 import { useState } from 'react'
-import { FileSignature } from 'lucide-react'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
-import Stack from 'react-bootstrap/Stack'
 import Table from 'react-bootstrap/Table'
 import { AdminFilterCard } from '../../components/admin/AdminFilterCard'
 import { AdminFilterSelect } from '../../components/admin/AdminFilterSelect'
@@ -10,8 +8,51 @@ import { AdminSearchBar } from '../../components/admin/AdminSearchBar'
 import { AdminTableCard } from '../../components/admin/AdminTableCard'
 import { RegistryIconRowActions } from '../../components/admin/RegistryIconRowActions'
 
-/** Sustituir por datos del API; vacío = fila «Sin datos». */
-const contratos = []
+/** Datos de ejemplo para maquetación; sustituir por respuesta del API. */
+const contratos = [
+  {
+    id: '1',
+    codigo: 'CT‑2026‑0892',
+    vigencia: '01/06/2024 — 31/05/2026',
+    inquilino: 'María González',
+    propiedad: 'Av. Corrientes 1842, Depto 4º «A», CABA',
+    renta: '$ 385.000',
+    estadoLabel: 'Vigente',
+    estadoBadgeClass: 'text-bg-success text-uppercase small',
+  },
+  {
+    id: '2',
+    codigo: 'CT‑2025‑4821‑C',
+    vigencia: '15/03/2025 — 14/03/2028',
+    inquilino: 'Construcciones del Sur SA',
+    propiedad: 'Galpón industrial · Ruta 36 km 412',
+    renta: '$ 940.000',
+    estadoLabel: 'Vigente',
+    estadoBadgeClass: 'text-bg-success text-uppercase small',
+  },
+  {
+    id: '3',
+    codigo: 'CT‑2024‑7740',
+    vigencia: '01/01/2024 — 30/06/2026',
+    inquilino: 'Luciano Fernández',
+    propiedad: 'Duplex · B° Nueva Córdoba',
+    renta: '$ 312.000',
+    estadoLabel: 'Por vencer',
+    estadoBadgeClass: 'text-uppercase small',
+    estadoBadgeBg: 'warning',
+    estadoBadgeText: 'dark',
+  },
+  {
+    id: '4',
+    codigo: 'CT‑2023‑2105',
+    vigencia: '01/02/2023 — 31/01/2025',
+    inquilino: 'Martín López',
+    propiedad: 'Local PB · Av. Pueyrredón 892, CABA',
+    renta: '$ 558.000',
+    estadoLabel: 'Finalizado',
+    estadoBadgeClass: 'text-bg-secondary text-uppercase small',
+  },
+]
 
 export function Contratos() {
   const [search, setSearch] = useState('')
@@ -20,7 +61,7 @@ export function Contratos() {
 
   return (
     <div>
-      <h1 className="h4 fw-bold mb-1" style={{ color: 'var(--inmobi-navy)' }}>
+      <h1 className="h3 fw-bold mb-1" style={{ color: 'var(--inmobi-navy)' }}>
         Contratos
       </h1>
       <p className="text-secondary small mb-2 mb-md-3">
@@ -28,18 +69,20 @@ export function Contratos() {
       </p>
 
       <AdminFilterCard
+        compact
         showViewToggle={false}
         prepend={
           <AdminSearchBar
+            compact
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar contratos..."
             ariaLabel="Buscar contratos"
-            wrapperStyle={{ minWidth: 200, maxWidth: 360, flex: '1 1 220px' }}
+            wrapperStyle={{ minWidth: 160, maxWidth: 320, flex: '1 1 200px' }}
           />
         }
         trailing={
-          <Button type="button" variant="success" className="fw-semibold rounded-3 px-4 py-2 shadow-sm">
+          <Button type="button" variant="success" size="sm" className="fw-semibold rounded-3 px-3 shadow-sm">
             Nuevo Contrato
           </Button>
         }
@@ -50,7 +93,7 @@ export function Contratos() {
               label="Estado"
               value={estado}
               onChange={(e) => setEstado(e.target.value)}
-              minWidth={160}
+              minWidth={136}
             >
               <option value="todos">Estado: Todos</option>
               <option value="vigente">Vigente</option>
@@ -63,7 +106,7 @@ export function Contratos() {
               label="Modalidad"
               value={modalidad}
               onChange={(e) => setModalidad(e.target.value)}
-              minWidth={160}
+              minWidth={136}
             >
               <option value="todos">Modalidad: Todas</option>
               <option value="residencial">Residencial</option>
@@ -74,25 +117,35 @@ export function Contratos() {
       />
 
       <AdminTableCard>
-        <Table hover className="align-middle mb-0">
+        <Table hover size="sm" className="align-middle mb-0">
           <thead>
             <tr className="border-bottom">
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3 ps-4">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2 ps-3">
                 Contrato
               </th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
+                Período
+              </th>
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
                 Inquilino
               </th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
                 Propiedad
               </th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
                 Renta mensual
               </th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
                 Estado
               </th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3 text-end pe-4">
+              <th
+                scope="col"
+                className="text-uppercase small text-secondary fw-semibold border-0 py-2 text-center"
+                style={{ minWidth: 100 }}
+              >
+                Detalle
+              </th>
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2 text-end pe-2">
                 Acciones
               </th>
             </tr>
@@ -100,47 +153,47 @@ export function Contratos() {
           <tbody>
             {contratos.length === 0 ? (
               <tr>
-                <td colSpan={6} className="text-center text-secondary py-5 border-0">
+                <td colSpan={8} className="text-center text-secondary py-4 border-0">
                   Sin datos
                 </td>
               </tr>
             ) : (
               contratos.map((c) => (
                 <tr key={c.id}>
-                  <td className="ps-4 border-0 py-3">
-                    <Stack direction="horizontal" gap={2} className="align-items-center">
-                      <span
-                        className="rounded-2 d-inline-flex align-items-center justify-content-center flex-shrink-0 text-secondary"
-                        style={{
-                          width: 36,
-                          height: 36,
-                          background: 'rgba(28, 47, 92, 0.08)',
-                        }}
-                        aria-hidden
-                      >
-                        <FileSignature size={18} strokeWidth={1.75} />
-                      </span>
-                      <div>
-                        <div className="fw-semibold">{c.codigo}</div>
-                        <div className="small text-secondary">{c.vigencia}</div>
-                      </div>
-                    </Stack>
-                  </td>
-                  <td className="border-0 py-3">{c.inquilino}</td>
-                  <td className="border-0 py-3">{c.propiedad}</td>
+                  <td className="ps-3 border-0 py-2 fw-semibold">{c.codigo}</td>
+                  <td className="border-0 py-2 small text-secondary text-nowrap">{c.vigencia}</td>
+                  <td className="border-0 py-2">{c.inquilino}</td>
+                  <td className="border-0 py-2">{c.propiedad}</td>
                   <td
-                    className="border-0 py-3 fw-semibold"
+                    className="border-0 py-2 fw-semibold"
                     style={{ color: 'var(--inmobi-header-accent)' }}
                   >
                     {c.renta}
                   </td>
-                  <td className="border-0 py-3">
-                    <Badge pill className="text-bg-success text-uppercase small">
-                      {c.estadoLabel}
-                    </Badge>
+                  <td className="border-0 py-2">
+                    {c.estadoBadgeBg ? (
+                      <Badge pill bg={c.estadoBadgeBg} text={c.estadoBadgeText} className={c.estadoBadgeClass}>
+                        {c.estadoLabel}
+                      </Badge>
+                    ) : (
+                      <Badge pill className={c.estadoBadgeClass}>
+                        {c.estadoLabel}
+                      </Badge>
+                    )}
                   </td>
-                  <td className="text-end pe-4 border-0 py-3">
-                    <RegistryIconRowActions resourceLabel="contrato" />
+                  <td className="border-0 py-2 text-center">
+                    <Button
+                      type="button"
+                      variant="outline-primary"
+                      size="sm"
+                      className="rounded-3 px-2 fw-semibold shadow-none"
+                      aria-label={`Ver detalle del contrato ${c.codigo}`}
+                    >
+                      Detalle
+                    </Button>
+                  </td>
+                  <td className="text-end pe-2 border-0 py-2">
+                    <RegistryIconRowActions resourceLabel="contrato" showView={false} />
                   </td>
                 </tr>
               ))
