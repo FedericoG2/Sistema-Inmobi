@@ -19,7 +19,7 @@ const userLinks = [
 export function Sidebar({ variant }) {
   const isUser = variant === 'user'
   const links = isUser ? userLinks : adminLinks
-  const subtitle = isUser ? 'ÁREA INQUILINO' : 'ASSET MANAGEMENT'
+  const subtitle = isUser ? 'ÁREA INQUILINO' : 'Sistema de Gestión'
 
   return (
     <aside className="inmobi-sidebar">
@@ -30,7 +30,11 @@ export function Sidebar({ variant }) {
           </div>
           <div className="d-flex flex-column">
             <span className="inmobi-sidebar-brand-title">Inmobi</span>
-            <span className="inmobi-sidebar-brand-sub">{subtitle}</span>
+            <span
+              className={`inmobi-sidebar-brand-sub${isUser ? ' inmobi-sidebar-brand-sub--caps' : ''}`}
+            >
+              {subtitle}
+            </span>
           </div>
         </div>
       </div>

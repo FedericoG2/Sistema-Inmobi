@@ -1,70 +1,50 @@
-import Table from 'react-bootstrap/Table';
+import Table from 'react-bootstrap/Table'
+import { AdminTableCard } from '../admin/AdminTableCard'
+
+/** Sustituir por datos del API; vacío = fila «Sin datos». */
+const reclamos = []
 
 export function ListadoReclamos() {
   return (
-    <>
-    <Table striped bordered hover>
-    <thead>
-  <tr>
-    <th>#</th>
-    <th>Fecha de reclamo</th>
-    <th>Área de Reclamo</th>
-    <th>Condición del reclamo</th>
-    <th>Ver reclamo</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td>1</td>
-    <td>2026-04-15</td>
-    <td>Administración</td>
-    <td>Pendiente</td>
-    <td><button className="btn btn-primary">Ver detalle</button></td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>2026-04-18</td>
-    <td>Mantenimiento</td>
-    <td>En Revisión</td>
-    <td><button className="btn btn-primary">Ver detalle</button></td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>2026-04-20</td>
-    <td>Legales</td>
-    <td>Resuelto</td>
-    <td><button className="btn btn-primary">Ver detalle</button></td>
-  </tr>
-  <tr>
-    <td>4</td>
-    <td>2026-04-22</td>
-    <td>Ventas</td>
-    <td>Pendiente</td>
-    <td><button className="btn btn-primary">Ver detalle</button></td>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td>2026-04-25</td>
-    <td>Administración</td>
-    <td>Rechazado</td>
-    <td><button className="btn btn-primary">Ver detalle</button></td>
-  </tr>
-  <tr>
-    <td>6</td>
-    <td>2026-04-28</td>
-    <td>Atención al Cliente</td>
-    <td>En Revisión</td>
-    <td><button className="btn btn-primary">Ver detalle</button></td>
-  </tr>
-  <tr>
-    <td>7</td>
-    <td>2026-05-02</td>
-    <td>Mantenimiento</td>
-    <td>Pendiente</td>
-    <td><button className="btn btn-primary">Ver detalle</button></td>
-  </tr>
-</tbody>
-    </Table>
-    </>
+    <AdminTableCard>
+      <Table hover className="align-middle mb-0">
+        <thead>
+          <tr className="border-bottom">
+            <th className="text-uppercase small text-secondary fw-semibold border-0 py-3 ps-4">#</th>
+            <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+              Fecha de reclamo
+            </th>
+            <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+              Área de Reclamo
+            </th>
+            <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+              Condición del reclamo
+            </th>
+            <th className="text-uppercase small text-secondary fw-semibold border-0 py-3 text-end pe-4">
+              Ver reclamo
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {reclamos.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="text-center text-secondary py-5 border-0">
+                Sin datos
+              </td>
+            </tr>
+          ) : (
+            reclamos.map((r) => (
+              <tr key={r.id}>
+                <td className="ps-4 border-0 py-3">{r.numero}</td>
+                <td className="border-0 py-3">{r.fecha}</td>
+                <td className="border-0 py-3">{r.area}</td>
+                <td className="border-0 py-3">{r.condicion}</td>
+                <td className="text-end pe-4 border-0 py-3">{r.accion}</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </Table>
+    </AdminTableCard>
   )
 }
