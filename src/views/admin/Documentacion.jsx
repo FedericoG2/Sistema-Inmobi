@@ -50,7 +50,7 @@ export function Documentacion() {
 
   return (
     <div>
-      <h1 className="h4 fw-bold mb-1" style={{ color: 'var(--inmobi-navy)' }}>
+      <h1 className="h3 fw-bold mb-1" style={{ color: 'var(--inmobi-navy)' }}>
         Documentación
       </h1>
       <p className="text-secondary small mb-2 mb-md-3" style={{ maxWidth: '42rem' }}>
@@ -58,14 +58,16 @@ export function Documentacion() {
       </p>
 
       <AdminFilterCard
+        compact
         showViewToggle={false}
         prepend={
           <AdminSearchBar
+            compact
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por nombre de documento..."
             ariaLabel="Buscar documentación"
-            wrapperStyle={{ minWidth: 200, maxWidth: 360, flex: '1 1 220px' }}
+            wrapperStyle={{ minWidth: 160, maxWidth: 320, flex: '1 1 200px' }}
           />
         }
         filters={
@@ -75,7 +77,7 @@ export function Documentacion() {
               label="Tipo de documento"
               value={tipoDoc}
               onChange={(e) => setTipoDoc(e.target.value)}
-              minWidth={200}
+              minWidth={136}
             >
               <option value="todos">Tipo: Todos</option>
               <option value="contrato">Contrato</option>
@@ -89,7 +91,7 @@ export function Documentacion() {
               label="Período de carga"
               value={periodo}
               onChange={(e) => setPeriodo(e.target.value)}
-              minWidth={200}
+              minWidth={136}
             >
               <option value="todos">Período: Todos</option>
               <option value="30">Últimos 30 días</option>
@@ -101,7 +103,7 @@ export function Documentacion() {
               label="Legajo"
               value={legajo}
               onChange={(e) => setLegajo(e.target.value)}
-              minWidth={200}
+              minWidth={136}
             >
               <option value="todos">Legajo: Todos</option>
               <option value="principal">Principal</option>
@@ -113,18 +115,18 @@ export function Documentacion() {
       />
 
       <AdminTableCard>
-        <Table hover className="align-middle mb-0">
+        <Table hover size="sm" className="align-middle mb-0">
           <thead>
             <tr className="border-bottom">
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3 ps-4">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2 ps-3">
                 Documento
               </th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">Tipo</th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">Tipo</th>
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
                 Fecha de carga
               </th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">Tamaño</th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3 text-end pe-4">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">Tamaño</th>
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2 text-end pe-2">
                 Consulta
               </th>
             </tr>
@@ -132,18 +134,18 @@ export function Documentacion() {
           <tbody>
             {filas.length === 0 ? (
               <tr>
-                <td colSpan={5} className="text-center text-secondary py-5 border-0">
+                <td colSpan={5} className="text-center text-secondary py-4 border-0">
                   Sin datos
                 </td>
               </tr>
             ) : (
               filas.map((d) => (
                 <tr key={d.id}>
-                  <td className="ps-4 border-0 py-3 fw-semibold">{d.nombre}</td>
-                  <td className="border-0 py-3">{d.tipo}</td>
-                  <td className="border-0 py-3">{d.fecha}</td>
-                  <td className="border-0 py-3">{d.tamano}</td>
-                  <td className="text-end pe-4 border-0 py-3">{d.accion}</td>
+                  <td className="ps-3 border-0 py-2 fw-semibold">{d.nombre}</td>
+                  <td className="border-0 py-2">{d.tipo}</td>
+                  <td className="border-0 py-2">{d.fecha}</td>
+                  <td className="border-0 py-2">{d.tamano}</td>
+                  <td className="text-end pe-2 border-0 py-2">{d.accion}</td>
                 </tr>
               ))
             )}

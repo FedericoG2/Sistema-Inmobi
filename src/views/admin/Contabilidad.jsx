@@ -1,22 +1,127 @@
 import { useMemo, useState } from 'react'
-import { Calculator } from 'lucide-react'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
-import Stack from 'react-bootstrap/Stack'
 import Table from 'react-bootstrap/Table'
 import { AdminFilterCard } from '../../components/admin/AdminFilterCard'
 import { AdminFilterSelect } from '../../components/admin/AdminFilterSelect'
 import { AdminSearchBar } from '../../components/admin/AdminSearchBar'
 import { AdminTableCard } from '../../components/admin/AdminTableCard'
 
-/** Sustituir por datos del API; vacío = fila «Sin datos». */
-const contratosActualizacion = []
+/** Datos de ejemplo para maquetación; sustituir por respuesta del API. */
+const contratosActualizacion = [
+  {
+    id: '1',
+    codigoContrato: 'CT‑2026‑0892',
+    propiedad: 'Av. Corrientes 1842, Depto 4º «A», CABA',
+    inquilino: 'María González',
+    frecuenciaLabel: 'Semestral',
+    periodoLabel: 'Jun 2026 — Dic 2026',
+    montoActual: '$ 385.000',
+    montoSugerido: '$ 401.760',
+    indiceLabel: 'IPC CABA',
+    variacionLabel: 'Variación aplicada: +4,35 %',
+    confirmacionClave: 'pendiente',
+    mesLiquidacionClave: '06',
+  },
+  {
+    id: '2',
+    codigoContrato: 'CT‑2025‑4821‑C',
+    propiedad: 'Galpón industrial · Ruta 36 km 412',
+    inquilino: 'Construcciones del Sur SA',
+    frecuenciaLabel: 'Cuatrimestral',
+    periodoLabel: 'May — Ago 2026',
+    montoActual: '$ 940.000',
+    montoSugerido: '$ 961.180',
+    indiceLabel: 'IPC Nacional',
+    variacionLabel: '+2,25 % (serie sin estacionalidad)',
+    confirmacionClave: 'pendiente',
+    mesLiquidacionClave: '05',
+  },
+  {
+    id: '3',
+    codigoContrato: 'CT‑2024‑7740',
+    propiedad: 'Duplex · B° Nueva Córdoba',
+    inquilino: 'Luciano Fernández',
+    frecuenciaLabel: 'Semestral',
+    periodoLabel: 'Jul 2025 — Ene 2026',
+    montoActual: '$ 312.000',
+    montoSugerido: '$ 324.890',
+    indiceLabel: 'IPC CABA + cláusula mixta',
+    variacionLabel: '+4,13 %',
+    confirmacionClave: 'confirmado',
+    mesLiquidacionClave: '05',
+  },
+  {
+    id: '4',
+    codigoContrato: 'CT‑2024‑9911',
+    propiedad: 'Oficina · Av. Libertador 11200',
+    inquilino: 'Estudio LK SRL',
+    frecuenciaLabel: 'Anual',
+    periodoLabel: 'Vto. ajuste: dic 2025',
+    montoActual: '$ 1.280.000',
+    montoSugerido: '$ 1.342.400',
+    indiceLabel: 'ICL / IPC combo',
+    variacionLabel: 'IPC acum. 12 m: +4,88 %',
+    confirmacionClave: 'pendiente',
+    mesLiquidacionClave: '06',
+  },
+]
 
 /** Historial de confirmaciones manuales (trazabilidad). */
-const historialAjustes = []
+const historialAjustes = [
+  {
+    id: 'h1',
+    fechaLabel: '28/04/2026 · 11:40',
+    codigoContrato: 'CT‑2024‑4102',
+    usuarioValidador: 'admin@inmobi.com',
+    montoAnterior: '$ 410.000',
+    montoNuevo: '$ 426.830',
+  },
+  {
+    id: 'h2',
+    fechaLabel: '15/04/2026 · 09:05',
+    codigoContrato: 'CT‑2025‑1208',
+    usuarioValidador: 'carolina.vega@inmobi.com',
+    montoAnterior: '$ 265.500',
+    montoNuevo: '$ 274.120',
+  },
+  {
+    id: 'h3',
+    fechaLabel: '02/04/2026 · 16:22',
+    codigoContrato: 'CT‑2023‑0891',
+    usuarioValidador: 'admin@inmobi.com',
+    montoAnterior: '$ 890.000',
+    montoNuevo: '$ 922.450',
+  },
+]
 
 /** Valores de índices para el panel de control. */
-const indicesConfigurados = []
+const indicesConfigurados = [
+  {
+    id: 'i1',
+    nombre: 'IPC CABA (INDEC)',
+    periodoLabel: 'Feb 2026 (publicación Mar 2026)',
+    valorLabel: '4,35 %',
+    origenClave: 'api',
+    actualizadoLabel: '12/03/2026 · 08:15 (API INDEC)',
+  },
+  {
+    id: 'i2',
+    nombre: 'IPC Nacional nivel general',
+    periodoLabel: 'Feb 2026',
+    valorLabel: '3,42 %',
+    origenClave: 'api',
+    actualizadoLabel: '12/03/2026 · 08:20 (API INDEC)',
+  },
+  {
+    id: 'i3',
+    nombre: 'ICL · serie histórica',
+    periodoLabel: '1º tri. 2026 (revisión 2)',
+    valorLabel: '12,8 % acum. anual',
+    origenClave: 'manual',
+    actualizadoLabel: '10/03/2026 · carga manual',
+  },
+]
 
 function normaliza(s) {
   return String(s).trim().toLowerCase()
@@ -49,32 +154,26 @@ export function Contabilidad() {
 
   return (
     <div>
-      <h1 className="h4 fw-bold mb-1" style={{ color: 'var(--inmobi-navy)' }}>
+      <h1 className="h3 fw-bold mb-1" style={{ color: 'var(--inmobi-navy)' }}>
         Contabilidad
       </h1>
-      <p className="text-secondary small mb-2 mb-md-3" style={{ maxWidth: '42rem' }}>
-        Automatización del cálculo de actualizaciones de alquiler: el sistema aplica los índices
-        configurados (por ejemplo IPC), sugiere el nuevo monto y requiere tu confirmación para
-        actualizar el contrato, generar el comprobante y notificar al inquilino.
-      </p>
-
-      <h2 className="h6 fw-bold mb-2 mt-1" style={{ color: 'var(--inmobi-navy)' }}>
-        Actualizaciones de alquiler
-      </h2>
-      <p className="text-secondary small mb-3">
-        Contratos vigentes con ajuste según frecuencia pactada. El valor sugerido se obtiene en
-        segundo plano; la confirmación manual es obligatoria para aplicar el cambio.
+      <p className="text-secondary small mb-3" style={{ maxWidth: '40rem' }}>
+        Actualizaciones de alquiler según contrato e índices (IPC y otros): el sistema propone los
+        nuevos montos, vos confirmás el ajuste y recién entonces se aplica el valor, se genera el
+        comprobante y se notifica al inquilino.
       </p>
 
       <AdminFilterCard
+        compact
         showViewToggle={false}
         prepend={
           <AdminSearchBar
+            compact
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por contrato, inquilino o propiedad..."
             ariaLabel="Buscar en actualizaciones"
-            wrapperStyle={{ minWidth: 200, maxWidth: 360, flex: '1 1 220px' }}
+            wrapperStyle={{ minWidth: 160, maxWidth: 320, flex: '1 1 200px' }}
           />
         }
         filters={
@@ -84,7 +183,7 @@ export function Contabilidad() {
               label="Mes de liquidación"
               value={mesLiquidacion}
               onChange={(e) => setMesLiquidacion(e.target.value)}
-              minWidth={200}
+              minWidth={136}
             >
               <option value="todos">Mes: Todos</option>
               <option value="01">Enero</option>
@@ -105,7 +204,7 @@ export function Contabilidad() {
               label="Estado de confirmación"
               value={estadoConfirmacion}
               onChange={(e) => setEstadoConfirmacion(e.target.value)}
-              minWidth={220}
+              minWidth={136}
             >
               <option value="todos">Confirmación: Todas</option>
               <option value="pendiente">Pendiente de confirmar</option>
@@ -117,34 +216,60 @@ export function Contabilidad() {
 
       <div className="mb-4">
         <AdminTableCard>
-          <Table hover className="align-middle mb-0">
+          <Table
+            hover
+            size="sm"
+            className="align-middle mb-0"
+            style={{ tableLayout: 'fixed', width: '100%' }}
+          >
+            <colgroup>
+              <col style={{ width: '8%' }} />
+              <col style={{ width: '15%' }} />
+              <col style={{ width: '10%' }} />
+              <col style={{ width: '7%' }} />
+              <col style={{ width: '10%' }} />
+              <col style={{ width: '8%' }} />
+              <col style={{ width: '8%' }} />
+              <col style={{ width: '14%' }} />
+              <col style={{ width: '9%' }} />
+              <col style={{ width: '11%' }} />
+            </colgroup>
             <thead>
               <tr className="border-bottom">
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3 ps-4">
+                <th
+                  className="text-uppercase text-secondary fw-semibold border-0 py-2 ps-3 lh-sm"
+                  style={{ fontSize: '0.65rem' }}
+                >
                   Contrato
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+                <th className="text-uppercase text-secondary fw-semibold border-0 py-2 lh-sm" style={{ fontSize: '0.65rem' }}>
+                  Propiedad
+                </th>
+                <th className="text-uppercase text-secondary fw-semibold border-0 py-2 lh-sm" style={{ fontSize: '0.65rem' }}>
                   Inquilino
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
-                  Frecuencia
+                <th className="text-uppercase text-secondary fw-semibold border-0 py-2 lh-sm" style={{ fontSize: '0.65rem' }}>
+                  Frec.
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+                <th className="text-uppercase text-secondary fw-semibold border-0 py-2 lh-sm" style={{ fontSize: '0.65rem' }}>
                   Período
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
-                  Monto actual
+                <th className="text-uppercase text-secondary fw-semibold border-0 py-2 lh-sm" style={{ fontSize: '0.65rem' }}>
+                  Actual
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
-                  Nuevo monto (sugerido)
+                <th className="text-uppercase text-secondary fw-semibold border-0 py-2 lh-sm" style={{ fontSize: '0.65rem' }}>
+                  Sugerido
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+                <th className="text-uppercase text-secondary fw-semibold border-0 py-2 lh-sm" style={{ fontSize: '0.65rem' }}>
                   Índice
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
-                  Confirmación
+                <th className="text-uppercase text-secondary fw-semibold border-0 py-2 lh-sm" style={{ fontSize: '0.65rem' }}>
+                  Estado
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3 text-end pe-4">
+                <th
+                  className="text-uppercase text-secondary fw-semibold border-0 py-2 pe-2 text-end lh-sm"
+                  style={{ fontSize: '0.65rem' }}
+                >
                   Acción
                 </th>
               </tr>
@@ -152,65 +277,64 @@ export function Contabilidad() {
             <tbody>
               {filasActualizacion.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="text-center text-secondary py-5 border-0">
+                  <td colSpan={10} className="text-center text-secondary py-4 border-0">
                     Sin datos
                   </td>
                 </tr>
               ) : (
                 filasActualizacion.map((r) => (
                   <tr key={r.id}>
-                    <td className="ps-4 border-0 py-3">
-                      <Stack direction="horizontal" gap={2} className="align-items-center">
-                        <span
-                          className="rounded-2 d-inline-flex align-items-center justify-content-center flex-shrink-0 text-secondary"
-                          style={{
-                            width: 36,
-                            height: 36,
-                            background: 'rgba(28, 47, 92, 0.08)',
-                          }}
-                          aria-hidden
-                        >
-                          <Calculator size={18} strokeWidth={1.75} />
-                        </span>
-                        <div>
-                          <div className="fw-semibold">{r.codigoContrato}</div>
-                          <div className="small text-secondary">{r.propiedad}</div>
-                        </div>
-                      </Stack>
-                    </td>
-                    <td className="border-0 py-3">{r.inquilino}</td>
-                    <td className="border-0 py-3">{r.frecuenciaLabel}</td>
-                    <td className="border-0 py-3">{r.periodoLabel}</td>
-                    <td className="border-0 py-3 fw-semibold">{r.montoActual}</td>
+                    <td className="ps-3 border-0 py-2 fw-semibold small text-break">{r.codigoContrato}</td>
+                    <td className="border-0 py-2 small text-secondary text-break lh-sm">{r.propiedad}</td>
+                    <td className="border-0 py-2 small text-break lh-sm">{r.inquilino}</td>
+                    <td className="border-0 py-2 small lh-sm text-break">{r.frecuenciaLabel}</td>
+                    <td className="border-0 py-2 small text-secondary text-break lh-sm">{r.periodoLabel}</td>
+                    <td className="border-0 py-2 fw-semibold small text-nowrap">{r.montoActual}</td>
                     <td
-                      className="border-0 py-3 fw-semibold"
+                      className="border-0 py-2 fw-semibold small text-nowrap"
                       style={{ color: 'var(--inmobi-header-accent)' }}
                     >
                       {r.montoSugerido}
                     </td>
-                    <td className="border-0 py-3">
-                      <div className="small">{r.indiceLabel}</div>
+                    <td className="border-0 py-2 small lh-sm text-break">
+                      <span className="d-block">{r.indiceLabel}</span>
                       {r.variacionLabel ? (
-                        <div className="small text-secondary">{r.variacionLabel}</div>
+                        <span className="d-block text-secondary" style={{ fontSize: '0.7rem' }}>
+                          {r.variacionLabel}
+                        </span>
                       ) : null}
                     </td>
-                    <td className="border-0 py-3">
+                    <td className="border-0 py-2">
                       {r.confirmacionClave === 'confirmado' ? (
-                        <Badge pill className="text-bg-success text-uppercase small">
-                          Confirmado
+                        <Badge
+                          pill
+                          bg="primary"
+                          className="text-uppercase py-1 px-2"
+                          style={{ fontSize: '0.65rem' }}
+                          title="Confirmado"
+                        >
+                          Confirm.
                         </Badge>
                       ) : (
-                        <Badge pill bg="warning" text="dark" className="text-uppercase small">
-                          Pendiente
+                        <Badge
+                          pill
+                          bg="warning"
+                          text="dark"
+                          className="text-uppercase py-1 px-2"
+                          style={{ fontSize: '0.65rem' }}
+                          title="Pendiente de confirmar"
+                        >
+                          Pend.
                         </Badge>
                       )}
                     </td>
-                    <td className="text-end pe-4 border-0 py-3">
+                    <td className="text-end pe-2 border-0 py-2">
                       <Button
                         type="button"
                         variant="success"
                         size="sm"
-                        className="fw-semibold rounded-3 px-3"
+                        className="fw-semibold rounded-2 px-2 py-1"
+                        style={{ fontSize: '0.75rem' }}
                         disabled={r.confirmacionClave === 'confirmado'}
                       >
                         Confirmar
@@ -233,25 +357,25 @@ export function Contabilidad() {
 
       <div className="mb-4">
         <AdminTableCard>
-          <Table hover className="align-middle mb-0">
+          <Table hover size="sm" className="align-middle mb-0">
             <thead>
               <tr className="border-bottom">
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3 ps-4">
+                <th className="text-uppercase small text-secondary fw-semibold border-0 py-2 ps-3">
                   Fecha
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+                <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
                   Contrato
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+                <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
                   Validó
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+                <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
                   Monto anterior
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+                <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
                   Monto nuevo
                 </th>
-                <th className="text-uppercase small text-secondary fw-semibold border-0 py-3 text-end pe-4">
+                <th className="text-uppercase small text-secondary fw-semibold border-0 py-2 text-end pe-2">
                   Comprobante
                 </th>
               </tr>
@@ -259,25 +383,25 @@ export function Contabilidad() {
             <tbody>
               {historialAjustes.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center text-secondary py-5 border-0">
+                  <td colSpan={6} className="text-center text-secondary py-4 border-0">
                     Sin datos
                   </td>
                 </tr>
               ) : (
                 historialAjustes.map((h) => (
                   <tr key={h.id}>
-                    <td className="ps-4 border-0 py-3">{h.fechaLabel}</td>
-                    <td className="border-0 py-3 fw-semibold">{h.codigoContrato}</td>
-                    <td className="border-0 py-3">{h.usuarioValidador}</td>
-                    <td className="border-0 py-3">{h.montoAnterior}</td>
+                    <td className="ps-3 border-0 py-2 small text-break">{h.fechaLabel}</td>
+                    <td className="border-0 py-2 fw-semibold small">{h.codigoContrato}</td>
+                    <td className="border-0 py-2 small text-break">{h.usuarioValidador}</td>
+                    <td className="border-0 py-2 small text-nowrap">{h.montoAnterior}</td>
                     <td
-                      className="border-0 py-3 fw-semibold"
+                      className="border-0 py-2 fw-semibold small text-nowrap"
                       style={{ color: 'var(--inmobi-header-accent)' }}
                     >
                       {h.montoNuevo}
                     </td>
-                    <td className="text-end pe-4 border-0 py-3">
-                      <Button type="button" variant="outline-secondary" size="sm" className="rounded-3">
+                    <td className="text-end pe-2 border-0 py-2">
+                      <Button type="button" variant="outline-secondary" size="sm" className="rounded-3 px-2 py-1">
                         Ver detalle
                       </Button>
                     </td>
@@ -298,25 +422,25 @@ export function Contabilidad() {
       </p>
 
       <AdminTableCard>
-        <Table hover className="align-middle mb-0">
+        <Table hover size="sm" className="align-middle mb-0">
           <thead>
             <tr className="border-bottom">
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3 ps-4">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2 ps-3">
                 Índice
               </th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
-                Período de referencia
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
+                Período ref.
               </th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
                 Valor
               </th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
                 Origen
               </th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2">
                 Actualizado
               </th>
-              <th className="text-uppercase small text-secondary fw-semibold border-0 py-3 text-end pe-4">
+              <th className="text-uppercase small text-secondary fw-semibold border-0 py-2 text-end pe-2">
                 Acción
               </th>
             </tr>
@@ -324,17 +448,17 @@ export function Contabilidad() {
           <tbody>
             {indicesConfigurados.length === 0 ? (
               <tr>
-                <td colSpan={6} className="text-center text-secondary py-5 border-0">
+                <td colSpan={6} className="text-center text-secondary py-4 border-0">
                   Sin datos
                 </td>
               </tr>
             ) : (
               indicesConfigurados.map((i) => (
                 <tr key={i.id}>
-                  <td className="ps-4 border-0 py-3 fw-semibold">{i.nombre}</td>
-                  <td className="border-0 py-3">{i.periodoLabel}</td>
-                  <td className="border-0 py-3">{i.valorLabel}</td>
-                  <td className="border-0 py-3">
+                  <td className="ps-3 border-0 py-2 fw-semibold small text-break">{i.nombre}</td>
+                  <td className="border-0 py-2 small text-break">{i.periodoLabel}</td>
+                  <td className="border-0 py-2 small text-nowrap">{i.valorLabel}</td>
+                  <td className="border-0 py-2">
                     {i.origenClave === 'api' ? (
                       <Badge bg="light" text="dark" className="border small">
                         API
@@ -345,10 +469,16 @@ export function Contabilidad() {
                       </Badge>
                     )}
                   </td>
-                  <td className="border-0 py-3 small text-secondary">{i.actualizadoLabel}</td>
-                  <td className="text-end pe-4 border-0 py-3">
-                    <Button type="button" variant="outline-primary" size="sm" className="rounded-3">
-                      Cargar / editar
+                  <td className="border-0 py-2 small text-secondary text-break">{i.actualizadoLabel}</td>
+                  <td className="text-end pe-2 border-0 py-2">
+                    <Button
+                      type="button"
+                      variant="outline-primary"
+                      size="sm"
+                      className="rounded-3 px-2 py-1"
+                      title="Cargar o editar valor del índice"
+                    >
+                      Editar
                     </Button>
                   </td>
                 </tr>
