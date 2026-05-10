@@ -2,7 +2,7 @@ import {
   Building2,
   CalendarClock,
   FileText,
-  Percent,
+  Hash,
   Users,
   Wrench,
 } from 'lucide-react'
@@ -47,7 +47,7 @@ export function Dashboard() {
               tone={3}
               label="Cantidad de aumentos este mes"
               value="15"
-              icon={<Percent size={iconSize} strokeWidth={2} aria-hidden />}
+              icon={<Hash size={iconSize} strokeWidth={2} aria-hidden />}
             />
           </Col>
           <Col>

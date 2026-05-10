@@ -1,6 +1,6 @@
 ﻿/**
  * Complemento a Bootstrap: hero con imagen, overlay y marca Inmobi.
- * Reemplazá hero-login.jpg en src/assets/ o el import en Login.jsx.
+ * Imagen lateral: hero-login.png en src/assets (o cambiá el import en Login.jsx).
  */
 .login-view {
   --inmobi-navy: #003354;
@@ -10,6 +10,27 @@
 .login-hero-bg {
   background-size: cover;
   background-position: center;
+}
+
+/* Más aire bajo el contenido del hero (las rayitas no al ras del borde). */
+.login-view .login-hero-aside.login-hero-bg {
+  padding-bottom: 2.75rem;
+}
+
+@media (min-width: 992px) {
+  .login-view .login-hero-aside.login-hero-bg {
+    padding-bottom: 4rem;
+  }
+}
+
+.login-view .login-hero-dots {
+  padding-bottom: 1rem;
+}
+
+@media (min-width: 992px) {
+  .login-view .login-hero-dots {
+    padding-bottom: 1.25rem;
+  }
 }
 
 .login-hero-overlay {
@@ -51,6 +72,94 @@
 
 .login-form-max {
   max-width: 420px;
+}
+
+.login-view .login-form-panel {
+  padding-top: clamp(2.75rem, 6vh, 3.5rem);
+  /* Aire después del texto legal para que no quede pegado al borde inferior */
+  padding-bottom: clamp(4.25rem, 14vh, 7rem);
+}
+
+.login-view .login-form-footer {
+  max-width: 22rem;
+  margin-inline: auto;
+}
+
+/* Marca centrada: proporción un poco mayor que inputs y tipografía del formulario */
+.login-brand-header {
+  --login-brand-size: 3.5rem;
+}
+
+.login-brand-mark {
+  width: var(--login-brand-size);
+  height: var(--login-brand-size);
+  margin-bottom: 0.875rem;
+}
+
+.login-brand-mark-icon {
+  width: 1.65rem;
+  height: 1.65rem;
+}
+
+.login-brand-wordmark {
+  font-size: clamp(1.35rem, 3.6vw, 1.6rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 0;
+}
+
+.login-brand-header h1.login-brand-wordmark {
+  font-size: clamp(1.35rem, 3.6vw, 1.6rem);
+}
+
+@media (min-width: 768px) {
+  .login-brand-header {
+    --login-brand-size: 3.75rem;
+  }
+
+  .login-brand-mark-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+/* Toggle contraseña: ícono plano sobre el mismo fondo que el campo; hover color marca */
+.login-view .input-group .login-password-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  padding: 0 0.75rem;
+  margin: 0;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-left: 0;
+  border-radius: 0;
+  background-color: #fff;
+  color: rgba(33, 37, 41, 0.55);
+  box-shadow: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.login-view .input-group .login-password-toggle:hover {
+  color: var(--inmobi-navy);
+  background-color: #fff;
+}
+
+.login-view .input-group .login-password-toggle:active {
+  color: var(--inmobi-navy-hover);
+}
+
+.login-view .input-group .login-password-toggle:focus {
+  outline: none;
+}
+
+.login-view .input-group .login-password-toggle:focus-visible {
+  outline: 2px solid rgba(0, 51, 84, 0.35);
+  outline-offset: -2px;
+  z-index: 3;
+  position: relative;
 }
 
 .login-view .form-check-input:checked {

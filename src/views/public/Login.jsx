@@ -1,7 +1,7 @@
 ﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowRight, Building2, Eye, EyeOff, Lock, Mail } from 'lucide-react'
-import heroUrl from '../../assets/hero-login.jpg'
+import heroUrl from '../../assets/hero-login.png'
 import './Login.css'
 
 export function Login() {
@@ -19,7 +19,7 @@ export function Login() {
     <div className="login-view container-fluid g-0 min-vh-100 p-0">
       <div className="row g-0 min-vh-100">
         <aside
-          className="login-hero-bg col-md-6 d-none d-md-flex flex-column justify-content-end position-relative text-white p-4 p-lg-5"
+          className="login-hero-aside login-hero-bg col-md-6 d-none d-md-flex flex-column justify-content-end position-relative text-white p-4 p-lg-5"
           style={{ backgroundImage: `url(${heroUrl})` }}
           aria-hidden="true"
         >
@@ -38,23 +38,17 @@ export function Login() {
           </div>
         </aside>
 
-        <div className="col-12 col-md-6 d-flex align-items-center justify-content-center bg-white py-5 px-3 px-md-4">
-          <div className="login-form-max w-100">
-            <div className="d-flex align-items-center gap-3 mb-4">
+        <div className="login-form-panel col-12 col-md-6 d-flex align-items-center justify-content-center bg-white px-3 px-md-4">
+          <div className="login-form-max w-100 mx-auto">
+            <header className="login-brand-header text-center mb-4">
               <div
-                className="bg-inmobi text-white d-inline-flex align-items-center justify-content-center rounded-3 flex-shrink-0"
-                style={{ width: '2.75rem', height: '2.75rem' }}
+                className="login-brand-mark bg-inmobi text-white mx-auto d-flex align-items-center justify-content-center rounded-3 flex-shrink-0 shadow-sm"
                 aria-hidden="true"
               >
-                <Building2 size={22} strokeWidth={2} />
+                <Building2 className="login-brand-mark-icon" strokeWidth={2} aria-hidden />
               </div>
-              <span className="text-inmobi fw-bold fs-4 lh-1">Inmobi</span>
-            </div>
-
-            <h1 className="fw-bold fs-4 mb-1 text-dark">Bienvenido de nuevo</h1>
-            <p className="text-secondary small mb-4 lh-base">
-            
-            </p>
+              <h1 className="text-inmobi fw-bold login-brand-wordmark d-block mb-0">Inmobi</h1>
+            </header>
 
             <form onSubmit={handleSubmit} noValidate>
               <label className="form-label small text-secondary mb-1" htmlFor="login-email">
@@ -103,11 +97,11 @@ export function Login() {
                 />
                 <button
                   type="button"
-                  className="btn btn-outline-secondary border-start-0 px-3"
+                  className="login-password-toggle"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={18} strokeWidth={2} /> : <Eye size={18} strokeWidth={2} />}
                 </button>
               </div>
 
@@ -144,8 +138,9 @@ export function Login() {
               Crear una cuenta
             </button>
 
-            <p className="text-center small text-secondary mt-4 mb-0 lh-sm px-1">
-              © 2026 Inmobi Asset Management. Plataforma segura de administración de propiedades.
+            <p className="login-form-footer text-center small text-secondary mt-4 mb-0 lh-sm px-1">
+              © 2026 Inmobi Sistema de Gestión Inmobiliaria. Plataforma segura de administración de
+              propiedades.
             </p>
           </div>
         </div>
